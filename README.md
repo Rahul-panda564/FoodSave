@@ -109,3 +109,36 @@ graph TD
     class Gateway,Auth,View,Serializer server;
     class DB db;
     class ML ai;
+
+```
+
+## 🔄 AI Workflow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Donor as 🏨 Donor (User)
+    participant FE as ⚛️ React Frontend
+    participant API as 🐍 Django API
+    participant AI as 🧠 AI Engine
+    participant DB as 🐘 PostgreSQL
+
+    Donor->>FE: Fills Food Details (Type, Temp, Time)
+    FE->>API: POST /api/food/ (Bearer Token)
+    
+    Note over API: Middleware Validates Token
+    
+    API->>AI: Send: (Temp=35°C, Hours=2)
+    activate AI
+    Note right of AI: Loads .pkl model & predicts
+    AI-->>API: Returns: (Safe_Life = 4.5 Hours)
+    deactivate AI
+    
+    API->>API: Calculate Expiry Timestamp
+    API->>DB: INSERT into FoodListing
+    DB-->>API: Success (ID: 101)
+    
+    API-->>FE: 201 Created (with Expiry Date)
+    FE-->>Donor: Show "Food Listed Successfully"
+
+```
