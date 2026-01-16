@@ -36,12 +36,13 @@ Unlike standard donation platforms, **FoodSave integrates a Machine Learning mod
 
 | Component | Technology | Description |
 | :--- | :--- | :--- |
-| **Frontend** | React.js + Vite | Responsive, fast user interface. |
-| **Styling** | Tailwind CSS | Modern, utility-first styling. |
-| **Backend** | Django REST Framework | Robust, secure API server. |
-| **Database** | PostgreSQL | Relational database for Users, Listings, and claims. |
-| **AI/ML** | Scikit-Learn & Pandas | Training and inference of spoilage models. |
-| **Auth** | JWT (SimpleJWT) | Secure, stateless token-based authentication. |
+| **Frontend** | ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E) | Component-based UI with fast build tooling. |
+| **Styling** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) | Utility-first CSS for rapid, responsive design. |
+| **Backend** | ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![DRF](https://img.shields.io/badge/Django_REST-ff1709?style=for-the-badge&logo=django&logoColor=white) | Secure, high-performance API development. |
+| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) | ACID-compliant relational database for data integrity. |
+| **AI / ML** | ![Scikit-Learn](https://img.shields.io/badge/scikit_learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Pandas](https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) | Random Forest implementation for spoilage prediction. |
+| **Auth** | ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white) | Stateless authentication using SimpleJWT. |
+| **Deploy** | ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white) ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white) | CI/CD automated deployment pipeline. |
 
 ---
 
