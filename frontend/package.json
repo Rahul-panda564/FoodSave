@@ -35,6 +35,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:pages": "npm run build && node scripts/export-to-docs.js",
+    "build:root": "npm run build && node scripts/export-to-root.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",
