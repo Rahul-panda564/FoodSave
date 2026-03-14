@@ -7,19 +7,23 @@
 	<img alt="License" src="https://img.shields.io/badge/License-Private-lightgrey">
 </p>
 
+<p align="center">
+	<img src="frontend/public/images/food-donation-hero.jpg" alt="FoodSave banner" width="100%" />
+</p>
+
 FoodSave is an AI-powered food redistribution platform that connects Donors, NGOs, Volunteers, and Admins to reduce food waste and improve last-mile delivery.
 
 ## Table of Contents
 
-- Features
-- Screenshots
-- Tech Stack
-- Project Structure
-- Quick Start
-- Environment Variables
-- API Groups
-- Useful Commands
-- Security Notes
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
+- [Environment Variables](#environment-variables)
+- [API Groups](#api-groups)
+- [Useful Commands](#useful-commands)
+- [Security Notes](#security-notes)
 
 ## Features
 
