@@ -16,13 +16,16 @@ FoodSave is an AI-powered food redistribution platform that connects Donors, NGO
 ## Table of Contents
 
 - [Features](#features)
+- [Live Demo](#live-demo)
 - [Screenshots](#screenshots)
+- [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Quick Start](#quick-start)
 - [Environment Variables](#environment-variables)
 - [API Groups](#api-groups)
 - [Useful Commands](#useful-commands)
+- [Roadmap](#roadmap)
 - [Security Notes](#security-notes)
 
 ## Features
@@ -33,6 +36,13 @@ FoodSave is an AI-powered food redistribution platform that connects Donors, NGO
 - Analytics + AI tooling for food safety and matching
 - Mobile-friendly navigation and dashboard experience
 
+## Live Demo
+
+- Frontend: Coming soon
+- Backend API: Coming soon
+
+## Screenshots
+
 ## Screenshots
 
 ### Home Experience
@@ -42,6 +52,18 @@ FoodSave is an AI-powered food redistribution platform that connects Donors, NGO
 ### Donation Experience
 
 ![Donation](frontend/public/images/food-donation-hero.jpg)
+
+## Architecture
+
+```mermaid
+flowchart LR
+	A[Donor / NGO / Volunteer / Admin] --> B[React Frontend]
+	B --> C[Django REST API]
+	C --> D[(SQLite DB)]
+	C --> E[Twilio OTP]
+	C --> F[Firebase Auth]
+	C --> G[AI / Analytics Engine]
+```
 
 ## Tech Stack
 
@@ -156,6 +178,13 @@ python manage.py seed_leaderboard_data
 cd frontend
 npm run build
 ```
+
+## Roadmap
+
+- Deploy production backend and frontend
+- Add CI pipeline for tests and lint checks
+- Improve analytics visualizations and reports
+- Add complete API documentation with examples
 
 ## Security Notes
 
