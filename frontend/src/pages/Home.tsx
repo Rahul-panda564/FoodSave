@@ -381,7 +381,7 @@ const Home: React.FC = () => {
                   <div className="absolute -inset-3 rounded-2xl bg-white/20 blur-xl"></div>
                   <img
                     className="relative h-96 w-full object-cover rounded-2xl shadow-2xl border border-white/20"
-                    src="/images/image.png"
+                    src={`${process.env.PUBLIC_URL}/images/image.png`}
                     alt="Food donation and distribution"
                     onError={(e) => {
                       e.currentTarget.src = "https://images.unsplash.com/photo-1521747205-af3f0c6e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8jZjw&auto=format&fit=crop&w=1200&q=80";
