@@ -377,7 +377,7 @@ const Home: React.FC = () => {
                 )}
               </div>
               
-              <div className="hidden lg:block lg:col-span-5 animate-enter-up" style={{ animationDelay: '140ms' }}>
+              <div className="lg:col-span-5 animate-enter-up mt-8 lg:mt-0" style={{ animationDelay: '140ms' }}>
                 <div className="lg:max-w-lg relative space-y-4">
                   <div className="absolute -inset-3 rounded-2xl bg-white/20 blur-xl"></div>
                   <img
