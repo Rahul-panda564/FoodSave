@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeApp, type FirebaseApp } from 'firebase/app';
+import { getAuth, type Auth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || '',
@@ -14,11 +14,13 @@ const missingConfig = Object.entries(firebaseConfig)
   .filter(([, value]) => !value)
   .map(([key]) => key);
 
-if (missingConfig.length > 0) {
-  throw new Error(`Missing Firebase environment variables: ${missingConfig.join(', ')}`);
+const hasFirebaseConfig = missingConfig.length === 0;
+
+if (!hasFirebaseConfig) {
+  console.warn(`Firebase disabled: missing environment variables: ${missingConfig.join(', ')}`);
 }
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const app: FirebaseApp | null = hasFirebaseConfig ? initializeApp(firebaseConfig) : null;
+export const auth: Auth | null = app ? getAuth(app) : null;
 
 export default app;
