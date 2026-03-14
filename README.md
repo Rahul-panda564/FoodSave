@@ -1,24 +1,55 @@
 # FoodSave
 
-FoodSave is an AI-powered food redistribution platform that connects **Donors**, **NGOs**, **Volunteers**, and **Admins** to reduce food waste and improve last-mile food delivery.
+<p align="center">
+	<a href="https://github.com/Rahul-panda564/FoodSave"><img alt="Repo" src="https://img.shields.io/badge/Repo-FoodSave-0f766e"></a>
+	<img alt="Frontend" src="https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-2563eb">
+	<img alt="Backend" src="https://img.shields.io/badge/Backend-Django%20%2B%20DRF-166534">
+	<img alt="License" src="https://img.shields.io/badge/License-Private-lightgrey">
+</p>
 
-## Highlights
+FoodSave is an AI-powered food redistribution platform that connects Donors, NGOs, Volunteers, and Admins to reduce food waste and improve last-mile delivery.
+
+## Table of Contents
+
+- Features
+- Screenshots
+- Tech Stack
+- Project Structure
+- Quick Start
+- Environment Variables
+- API Groups
+- Useful Commands
+- Security Notes
+
+## Features
 
 - Role-based workflows (DONOR, NGO, VOLUNTEER, ADMIN)
 - Donation lifecycle: create → request → pickup → delivery
-- Smart matching and analytics tools
 - Leaderboard and reward redemption
-- Mobile-friendly UI and dashboard navigation
+- Analytics + AI tooling for food safety and matching
+- Mobile-friendly navigation and dashboard experience
+
+## Screenshots
+
+### Home Experience
+
+![Home](frontend/public/images/image.png)
+
+### Donation Experience
+
+![Donation](frontend/public/images/food-donation-hero.jpg)
 
 ## Tech Stack
 
-**Backend**
+### Backend
+
 - Django
 - Django REST Framework
 - Simple JWT
 - SQLite (local development)
 
-**Frontend**
+### Frontend
+
 - React + TypeScript
 - Tailwind CSS
 - Axios
@@ -41,7 +72,7 @@ FoodSave/
 └── start.ps1
 ```
 
-## Local Setup
+## Quick Start
 
 ### Prerequisites
 
@@ -49,7 +80,7 @@ FoodSave/
 - Node.js 18+
 - npm
 
-### 1) Backend Setup
+### 1) Backend
 
 ```powershell
 cd backend
@@ -60,9 +91,9 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Backend runs at: `http://localhost:8000`
+Backend URL: http://localhost:8000
 
-### 2) Frontend Setup
+### 2) Frontend
 
 ```powershell
 cd frontend
@@ -70,11 +101,11 @@ npm install
 npm start
 ```
 
-Frontend runs at: `http://localhost:3000`
+Frontend URL: http://localhost:3000
 
 ## Environment Variables
 
-### Backend (`backend/.env`)
+### backend/.env
 
 ```env
 SECRET_KEY=your-secret-key
@@ -86,7 +117,7 @@ TWILIO_AUTH_TOKEN=
 TWILIO_PHONE_NUMBER=
 ```
 
-### Frontend (`frontend/.env`)
+### frontend/.env
 
 ```env
 REACT_APP_API_URL=http://localhost:8000/api
@@ -98,17 +129,11 @@ REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
 REACT_APP_FIREBASE_APP_ID=
 ```
 
-## Core Modules
-
-- `accounts`: authentication, profile, leaderboard, prizes
-- `donations`: donation and pickup flows
-- `analytics`: dashboard metrics, charts, AI algorithm endpoints
-
 ## API Groups
 
-- `/api/auth/`
-- `/api/donations/`
-- `/api/analytics/`
+- /api/auth/
+- /api/donations/
+- /api/analytics/
 
 ## Useful Commands
 
@@ -128,12 +153,12 @@ cd frontend
 npm run build
 ```
 
-## Notes
+## Security Notes
 
-- Local development uses SQLite.
-- Keep secrets only in `.env` files.
-- Do not commit production keys or credentials.
+- Keep all credentials only in .env files.
+- Do not commit production secrets.
+- Rotate keys if GitHub secret scanning reports exposure.
 
 ---
 
-If you want, open an issue or PR with improvements to UI, algorithms, or performance.
+Contributions and improvements are welcome.
