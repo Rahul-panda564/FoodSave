@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { analyticsAPI } from '../services/api';
+import homeHeroImage from '../assets/home-hero.png';
 
 const STATS = [
   { value: 1000, suffix: '+', label: 'Meals Saved Daily', icon: '🍽' },
@@ -381,7 +382,7 @@ const Home: React.FC = () => {
                   <div className="absolute -inset-3 rounded-2xl bg-white/20 blur-xl"></div>
                   <img
                     className="relative h-96 w-full object-cover rounded-2xl shadow-2xl border border-white/20"
-                    src={`${process.env.PUBLIC_URL}/images/image.png`}
+                    src={homeHeroImage}
                     alt="Food donation and distribution"
                     onError={(e) => {
                       e.currentTarget.src = "https://images.unsplash.com/photo-1521747205-af3f0c6e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8jZjw&auto=format&fit=crop&w=1200&q=80";
