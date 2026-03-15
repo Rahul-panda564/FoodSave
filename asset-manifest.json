@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/FoodSave/static/css/main.8799462c.css",
-    "main.js": "/FoodSave/static/js/main.2917e89c.js",
+    "main.css": "/FoodSave/static/css/main.166025c0.css",
+    "main.js": "/FoodSave/static/js/main.af70f9dd.js",
     "static/js/453.825386d9.chunk.js": "/FoodSave/static/js/453.825386d9.chunk.js",
+    "static/media/home-hero.png": "/FoodSave/static/media/home-hero.1292b357a54d9016d63f.png",
     "index.html": "/FoodSave/index.html",
-    "main.8799462c.css.map": "/FoodSave/static/css/main.8799462c.css.map",
-    "main.2917e89c.js.map": "/FoodSave/static/js/main.2917e89c.js.map",
+    "main.166025c0.css.map": "/FoodSave/static/css/main.166025c0.css.map",
+    "main.af70f9dd.js.map": "/FoodSave/static/js/main.af70f9dd.js.map",
     "453.825386d9.chunk.js.map": "/FoodSave/static/js/453.825386d9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8799462c.css",
-    "static/js/main.2917e89c.js"
+    "static/css/main.166025c0.css",
+    "static/js/main.af70f9dd.js"
   ]
 }
