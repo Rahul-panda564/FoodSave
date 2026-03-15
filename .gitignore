@@ -22,6 +22,18 @@ frontend/.env.development.local
 frontend/.env.test.local
 frontend/.env.production.local
 
+# Prevent accidental root-level frontend build output clutter
+/.nojekyll
+/asset-manifest.json
+/favicon.ico
+/index.html
+/logo192.png
+/logo512.png
+/manifest.json
+/robots.txt
+/images/
+/static/
+
 # Logs
 *.log
 npm-debug.log*
