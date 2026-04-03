@@ -10,219 +10,247 @@
 </p>
 
 <p align="center">
-	<img src="frontend/public/images/image.png" alt="FoodSave banner" width="100%" />
+	<img src="frontend/src/assets/home-hero.png" alt="FoodSave hero visual" width="100%" />
 </p>
 
 ## Overview
 
-FoodSave is an AI-enabled food redistribution platform built to reduce food waste and improve last-mile food delivery.
+FoodSave is an AI-assisted food redistribution platform that helps donors, NGOs, volunteers, and platform operators move surplus food to people who can use it before it goes to waste.
 
-It connects **Donors**, **NGOs**, **Volunteers**, and **Admins** through role-based workflows for donation creation, pickup coordination, delivery tracking, and impact analytics.
+The product combines a React + TypeScript frontend with a Django REST backend to support donation creation, pickup coordination, real-time tracking, leaderboard incentives, and analytics-driven decision making.
 
----
+## At A Glance
 
-## Table of Contents
+| Area | Details |
+|------|---------|
+| Purpose | Reduce food waste and improve last-mile food redistribution |
+| Users | Donors, NGOs, Volunteers, and Admin operators |
+| Frontend | React 19, TypeScript, React Router, Tailwind CSS, Framer Motion |
+| Backend | Django 6.0.3, Django REST Framework, Simple JWT |
+| Intelligence | Food-safety prediction, nearest NGO matching, donation prioritization |
+| Visual Assets | Landing-page hero art and modular dashboard interfaces |
 
-- [Recruiter Snapshot](#recruiter-snapshot)
-- [Why FoodSave](#why-foodsave)
-- [Role-Based Capabilities](#role-based-capabilities)
-- [System Architecture](#system-architecture)
-- [Donation Workflow](#donation-workflow)
-- [Screenshots](#screenshots)
-- [Tech Stack](#tech-stack)
-- [Repository Structure](#repository-structure)
-- [Quick Start](#quick-start)
-- [Environment Variables](#environment-variables)
-- [API Overview](#api-overview)
-- [Build & Deployment](#build--deployment)
-- [Useful Commands](#useful-commands)
-- [Roadmap](#roadmap)
-- [Security Notes](#security-notes)
+## Visual Preview
 
----
+The repository currently ships with a strong landing-page visual that is used across the public homepage and README banner.
 
-## Recruiter Snapshot
+<p align="center">
+	<img src="frontend/src/assets/home-hero.png" alt="FoodSave homepage visual" width="92%" />
+</p>
 
-### Problem
+## Why It Exists
 
-Communities often face a mismatch between **surplus food availability** and **timely redistribution**, leading to avoidable waste and delayed help to beneficiaries.
+Food waste and food insecurity often coexist in the same city. The main gap is coordination: food must be listed, matched, assigned, picked up, and delivered quickly enough to remain usable.
 
-### Solution
+FoodSave addresses that gap with:
 
-FoodSave provides a role-based digital coordination layer for:
+- role-based workflows for each participant,
+- image-backed donation listings,
+- nearby matching for pickups,
+- volunteer dispatch and status updates,
+- analytics dashboards that show impact instead of just activity,
+- AI-enabled helpers for food safety and NGO recommendation.
 
-- donation creation and image-based listing,
-- nearby discovery and pickup assignment,
-- volunteer decision flow,
-- admin analytics and impact visibility,
-- AI-assisted decisions (food safety, NGO matching, prioritization).
+## Core Experience
 
-### Engineering Highlights
+### Donor Flow
 
-- Full-stack implementation using **React + TypeScript** and **Django REST Framework**.
-- JWT-based secured API flow with phone OTP and federated auth support.
-- Modular domain apps (`accounts`, `donations`, `analytics`) with clear separation of concerns.
-- Operational dashboards and algorithm endpoints to support data-driven decisions.
+- Create a donation with food details, timing, storage conditions, and pickup location.
+- Upload an image to support the listing and improve decision making.
+- Track whether the donation is available, assigned, picked up, or completed.
 
-### My Key Contributions (Full-Stack)
+### NGO Flow
 
-- Implemented role-protected frontend navigation using `PrivateRoute` and `AdminRoute`, including dedicated flows for dashboard, donations, pickups, analytics, feedback, and AI tools (`/ai-tools`).
-- Built and integrated backend modules for `accounts`, `donations`, and `analytics`, including donation + pickup lifecycle APIs (`/api/donations/`, `/api/donations/pickups/`).
-- Implemented multi-path authentication: JWT token flow, phone OTP endpoints, profile management, and Google auth integration endpoints.
-- Delivered analytics and algorithm APIs for food safety prediction, nearest NGO matching, priority donation queueing, and recommendation workflows.
-- Improved project maintainability with cleaner repository structure, deployment artifact organization, and professional documentation for faster recruiter/team onboarding.
+- Discover nearby donations and request pickups.
+- Manage coordination around food collection and delivery handoff.
+- View donation and pickup status from the dashboard.
 
-### Impact Focus
+### Volunteer Flow
 
-- Reduces friction between donors and NGOs/volunteers.
-- Improves response speed for pickup coordination.
-- Creates measurable transparency through leaderboard and impact analytics.
+- Review pickup opportunities.
+- Accept or decline assignments.
+- Complete pickup execution and delivery tracking.
 
-### Interview Talking Points
+### Operator Flow
 
-- Why role-based architecture was chosen and how permissions are enforced.
-- Trade-offs between rapid MVP delivery (SQLite/local) and production scalability.
-- How algorithm endpoints were integrated into a practical operational workflow.
-- What I would harden next for production (CI, observability, containerized deployment, scaling DB).
+- View platform-level analytics and donation trends.
+- Review feedback and operational signals.
+- Use the AI tools page to inspect the recommendation and prioritization layer.
 
----
-
-## Why FoodSave
-
-- **Real-world problem focus**: tackles food waste and redistribution inefficiency.
-- **End-to-end workflow**: from listing donations to successful pickup and completion.
-- **AI-assisted decisions**: food safety prediction, nearest NGO match, and priority queueing.
-- **Role-driven platform**: clear permissions and experiences for each actor.
-- **Analytics-ready**: dashboard metrics, rankings, and impact views.
-
----
-
-## Role-Based Capabilities
-
-| Role | Core Actions |
-|------|--------------|
-| **Donor** | Create donations, upload donation images, track donation status, view leaderboard impact |
-| **NGO** | Browse/claim nearby donations, manage pickup flow, monitor deliveries |
-| **Volunteer** | Accept/reject pickup requests, handle pickup execution workflow |
-| **Admin** | View global dashboard, analytics, feedback, and manage operational visibility |
-
----
-
-## System Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
-	U[Users<br/>Donor / NGO / Volunteer / Admin] --> F[React + TypeScript Frontend]
-	F -->|JWT / REST| B[Django + DRF Backend]
-	B --> DB[(SQLite)]
-	B --> OTP[Twilio Phone OTP]
-	B --> GA[Google/Firebase Auth Integration]
-	B --> AI[Analytics + ML Algorithms]
+  U[Users\nDonor / NGO / Volunteer / Operator] --> FE[React + TypeScript Frontend]
+  FE -->|JWT / REST| API[Django REST API]
+  API --> ACC[accounts app\nAuth, profile, leaderboard, prizes]
+  API --> DON[donations app\nDonations, pickups, routes]
+  API --> ANA[analytics app\nDashboards, charts, AI endpoints]
+  API --> DB[(SQLite / production DB-ready)]
+  API --> OTP[Phone OTP via Twilio]
+  API --> FIREBASE[Google / Firebase auth integration]
+  API --> ML[Scoring and recommendation logic]
 ```
 
-### Frontend Routing Model
+### Frontend Routing
 
 ```mermaid
 flowchart TD
-	A[/home, /login, /register/] --> B[PrivateRoute]
-	B --> C[User Dashboard & Donations]
-	B --> D[Pickups / Notifications / Profile / Leaderboard]
-	B --> E[/ai-tools]
-	B --> F[AdminRoute]
-	F --> G[/analytics /feedback /admin-donations /admin-pickups]
+  H[/home/] --> A[/login / register/]
+  A --> P[PrivateRoute]
+  P --> D[/dashboard/]
+  P --> N[/donations / my-donations / create-donation/]
+  P --> K[/pickups / notifications / leaderboard / profile/]
+  P --> T[/ai-tools/]
+  P --> R[AdminRoute]
+  R --> X[/analytics / feedback / admin-donations / admin-pickups/]
 ```
 
----
-
-## Donation Workflow
+## Donation Lifecycle
 
 ```mermaid
 sequenceDiagram
-	participant D as Donor
-	participant FE as Frontend
-	participant API as Django API
-	participant N as NGO/Volunteer
+  participant Donor
+  participant Frontend
+  participant API as Django API
+  participant NGO
+  participant Volunteer
 
-	D->>FE: Create donation + image
-	FE->>API: POST /api/donations/
-	API-->>FE: Donation created
-	N->>FE: Browse nearby donations
-	FE->>API: GET /api/donations/nearby/
-	N->>FE: Create pickup request
-	FE->>API: POST /api/donations/pickups/
-	API-->>FE: Pickup request status updates
-	FE->>API: Trigger analytics endpoints
-	API-->>FE: Dashboard + impact data
+  Donor->>Frontend: Submit donation with image and location
+  Frontend->>API: POST /api/donations/
+  API-->>Frontend: Donation created
+  NGO->>Frontend: Browse nearby donations
+  Frontend->>API: GET /api/donations/nearby/
+  NGO->>Frontend: Request pickup
+  Frontend->>API: POST /api/donations/pickups/
+  Volunteer->>Frontend: Accept assignment
+  Frontend->>API: POST /api/donations/pickups/:id/decision/
+  API-->>Frontend: Status updates and analytics signals
 ```
 
----
+## Screenshots and Visuals
 
-## Screenshots
+The codebase currently includes the landing-page hero visual used above. The app also includes rich in-product UI states for:
 
-### Home Experience
+- donation creation with image preview,
+- profile image preview and upload,
+- analytics charts and top-entity leaderboards,
+- AI tools dashboard with chart and network visualizations,
+- role-specific dashboards for donors, NGOs, volunteers, and operators.
 
-![Home](frontend/public/images/image.png)
-
-### Donation Experience
-
-![Donation](frontend/public/images/image.png)
-
----
+If you want this README to include actual UI screenshots from the app shell, add exported page captures into `frontend/src/assets/` and replace or extend the current gallery section.
 
 ## Tech Stack
 
 ### Frontend
 
-- React 19 + TypeScript
-- React Router
+- React 19
+- TypeScript
+- React Router 7
 - Tailwind CSS
+- Framer Motion
 - Axios
-- Chart.js + react-chartjs-2
-- Leaflet + react-leaflet
+- Chart.js and react-chartjs-2
+- Leaflet and react-leaflet
 - Firebase SDK
 
 ### Backend
 
-- Django 6
+- Django 6.0.3
 - Django REST Framework
 - Simple JWT
+- django-allauth
 - django-cors-headers
 - Pillow
+- Twilio
+- scikit-learn
+- NumPy
+- pandas
 - WhiteNoise
-- Twilio SDK
-- scikit-learn / NumPy / Pandas
 
-### Data & Infra
+### Data and Storage
 
-- SQLite (default local DB)
-- Media storage under `backend/media`
-
----
+- SQLite for local development
+- Media uploads under `backend/media/`
+- Static deployment artifacts under `deploy/github-pages/`
 
 ## Repository Structure
 
 ```text
 FoodSave/
 ├── backend/
-│   ├── accounts/                # Authentication, profile, leaderboard, rewards
-│   ├── donations/               # Donation and pickup lifecycle APIs
-│   ├── analytics/               # Metrics, chart data, AI algorithm endpoints
-│   ├── foodsave/                # Django project settings and root URLs
+│   ├── accounts/      # Authentication, profile, points, leaderboard, prizes
+│   ├── donations/     # Donation, pickup, route, and status lifecycle
+│   ├── analytics/     # Dashboard, charts, feedback, and AI-style endpoints
+│   ├── foodsave/      # Django project settings and root URL routing
 │   ├── manage.py
 │   └── requirements.txt
 ├── frontend/
-│   ├── src/                     # React app (pages, components, contexts, services)
+│   ├── src/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   └── assets/
 │   ├── public/
-│   ├── scripts/                 # Build export scripts
+│   ├── scripts/
 │   └── package.json
 ├── deploy/
-│   └── github-pages/            # Generated static artifacts for Pages-style deploys
-├── start.bat
-├── start.ps1
-└── README.md
+│   └── github-pages/
+├── README.md
+└── LICENSE
 ```
 
----
+## API Surface
+
+### Root API Groups
+
+- `/api/auth/`
+- `/api/donations/`
+- `/api/analytics/`
+- `/api/token/`
+- `/api/token/refresh/`
+
+### Auth API
+
+- `register/`, `login/`, `logout/`
+- `profile/`, `upload-profile-image/`, `change-password/`
+- `phone/send-otp/`, `phone/verify-otp/`, `phone/register/`, `phone/login/`
+- `google/auth/`
+- `stats/`, `leaderboard/`, `leaderboard/award-top/`
+- `prizes/`, `prizes/redeem/`
+
+### Donations API
+
+- `categories/`
+- `GET /` and `POST /` for donations
+- `upload-image/`
+- `<id>/`
+- `my-donations/`
+- `nearby/`
+- `pickups/`
+- `pickups/<id>/`
+- `pickups/<id>/decision/`
+- `pickups/volunteer/`
+
+### Analytics API
+
+- `dashboard/`
+- `daily/`
+- `activities/`
+- `feedback/`
+- `feedback/list/`
+- `charts/donations/`
+- `top-donors/`
+- `top-ngos/`
+- `food-waste-impact/`
+- `algorithms/food-safety/`
+- `algorithms/nearest-ngo/`
+- `algorithms/priority-donations/`
+- `algorithms/recommend-ngos/`
+- `algorithms/trigger-notifications/`
+- `calculate/`
 
 ## Quick Start
 
@@ -232,7 +260,7 @@ FoodSave/
 - Node.js 18+
 - npm
 
-### 1) Backend Setup
+### Backend
 
 ```powershell
 cd backend
@@ -243,9 +271,9 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Backend runs at: **http://localhost:8000**
+Backend: `http://localhost:8000`
 
-### 2) Frontend Setup
+### Frontend
 
 ```powershell
 cd frontend
@@ -253,9 +281,9 @@ npm install
 npm start
 ```
 
-Frontend runs at: **http://localhost:3000**
+Frontend: `http://localhost:3000`
 
-### Optional One-Click Startup (Windows)
+### One-Click Startup on Windows
 
 ```powershell
 ./start.ps1
@@ -266,8 +294,6 @@ or
 ```bat
 start.bat
 ```
-
----
 
 ## Environment Variables
 
@@ -296,47 +322,7 @@ REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
 REACT_APP_FIREBASE_APP_ID=
 ```
 
----
-
-## API Overview
-
-### Base Groups
-
-- `/api/auth/`
-- `/api/donations/`
-- `/api/analytics/`
-- `/api/token/`
-- `/api/token/refresh/`
-
-### Auth (`/api/auth/`)
-
-- `register/`, `login/`, `logout/`
-- `profile/`, `upload-profile-image/`, `change-password/`
-- `phone/send-otp/`, `phone/verify-otp/`, `phone/register/`, `phone/login/`
-- `google/auth/`
-- `leaderboard/`, `leaderboard/award-top/`, `prizes/`, `prizes/redeem/`
-
-### Donations (`/api/donations/`)
-
-- `categories/`
-- `GET/POST /` donation listing + create
-- `upload-image/`, `<id>/`, `my-donations/`, `nearby/`
-- `pickups/`, `pickups/<id>/`, `pickups/<id>/decision/`, `pickups/volunteer/`
-
-### Analytics (`/api/analytics/`)
-
-- `dashboard/`, `daily/`, `activities/`
-- `feedback/`, `feedback/list/`
-- `charts/donations/`
-- `top-donors/`, `top-ngos/`, `food-waste-impact/`
-- `algorithms/food-safety/`, `algorithms/nearest-ngo/`
-- `algorithms/priority-donations/`, `algorithms/recommend-ngos/`
-- `algorithms/trigger-notifications/`
-- `calculate/`
-
----
-
-## Build & Deployment
+## Build and Deployment
 
 ### Frontend Build
 
@@ -345,16 +331,14 @@ cd frontend
 npm run build
 ```
 
-### Export Options (from `frontend`)
+### Export Targets
 
-- `npm run build:pages` → copies build output to `docs/` (GitHub Pages main/docs style)
-- `npm run build:root` → copies build output to repository root
+- `npm run build:pages` copies the build output to a GitHub Pages-friendly structure.
+- `npm run build:root` copies the build output to the repository root.
 
-### Current Repository Deployment Artifacts
+### Deployment Artifacts
 
-- Static deployment files are currently organized under `deploy/github-pages/`.
-
----
+- Static deployment output is currently organized under `deploy/github-pages/`.
 
 ## Useful Commands
 
@@ -374,26 +358,20 @@ npm run test
 npm run build
 ```
 
----
-
 ## Roadmap
 
-- Add CI pipelines for linting, testing, and build verification
-- Publish formal API documentation (OpenAPI/Swagger)
+- Add CI for linting, testing, and build verification
+- Publish OpenAPI or Swagger documentation
 - Expand AI recommendation quality with larger datasets
-- Add production-grade deployment docs (Docker + cloud target)
-- Improve observability (structured logging + error tracing)
-
----
+- Add containerized deployment documentation
+- Improve observability with structured logging and tracing
 
 ## Security Notes
 
-- Keep all credentials in `.env` files only
+- Keep credentials in `.env` files only
 - Do not commit secrets, tokens, or service account keys
 - Rotate compromised credentials immediately
-- Use secure `SECRET_KEY` and disable `DEBUG` in production
-
----
+- Disable `DEBUG` in production
 
 ## Contribution
 
