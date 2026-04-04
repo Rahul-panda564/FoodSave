@@ -4,7 +4,7 @@
 	<a href="https://github.com/Rahul-panda564/FoodSave"><img alt="Repository" src="https://img.shields.io/badge/Repository-FoodSave-0f766e"></a>
 	<img alt="Frontend" src="https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-2563eb">
 	<img alt="Backend" src="https://img.shields.io/badge/Backend-Django%20%2B%20DRF-166534">
-	<img alt="Database" src="https://img.shields.io/badge/Database-SQLite-6b7280">
+	<img alt="Database" src="https://img.shields.io/badge/Database-PostgreSql-6b7280">
 	<img alt="Auth" src="https://img.shields.io/badge/Auth-JWT%20%2B%20Phone%20OTP-orange">
 	<img alt="Status" src="https://img.shields.io/badge/Status-Active%20Development-blueviolet">
 </p>
