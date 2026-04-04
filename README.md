@@ -30,14 +30,6 @@ The product combines a React + TypeScript frontend with a Django REST backend to
 | Intelligence | Food-safety prediction, nearest NGO matching, donation prioritization |
 | Visual Assets | Landing-page hero art and modular dashboard interfaces |
 
-## Visual Preview
-
-The repository currently ships with a strong landing-page visual that is used across the public homepage and README banner.
-
-<p align="center">
-	<img src="frontend/src/assets/home-hero.png" alt="FoodSave homepage visual" width="92%" />
-</p>
-
 ## Why It Exists
 
 Food waste and food insecurity often coexist in the same city. The main gap is coordination: food must be listed, matched, assigned, picked up, and delivered quickly enough to remain usable.
