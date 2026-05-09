@@ -5,6 +5,7 @@
 	<img alt="Frontend" src="https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-2563eb">
 	<img alt="Backend" src="https://img.shields.io/badge/Backend-Django%20%2B%20DRF-166534">
 	<img alt="Google Services" src="https://img.shields.io/badge/Google-Firebase%20Auth%20%2B%20OAuth2-ea4335">
+	<img alt="Database" src="https://img.shields.io/badge/Database-PostgreSQL-6b7280">
 	<img alt="Status" src="https://img.shields.io/badge/Status-Production%20Ready-blueviolet">
 </p>
 
