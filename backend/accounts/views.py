@@ -407,8 +407,12 @@ class GoogleAuthView(APIView):
             index += 1
         return candidate
     
+
     def post(self, request):
+        import logging
+        logger = logging.getLogger("django")
         serializer = GoogleAuthSerializer(data=request.data)
+        logger.info("GoogleAuthView: Incoming request for Google authentication")
         if serializer.is_valid():
             token = serializer.validated_data.get('token')
             email = serializer.validated_data.get('email')
@@ -418,33 +422,50 @@ class GoogleAuthView(APIView):
             role = serializer.validated_data.get('role', 'DONOR')
             phone_number = serializer.validated_data.get('phone_number', '')
             organization_name = serializer.validated_data.get('organization_name', '')
-            
             try:
                 if token:
                     from google.auth.transport import requests
                     from google.oauth2 import id_token
 
-                    google_client_id = (
-                        getattr(settings, 'GOOGLE_OAUTH2_KEY', None)
-                        or getattr(settings, 'GOOGLE_CLIENT_ID', None)
-                        or None
-                    )
+                    google_client_id = getattr(settings, 'GOOGLE_CLIENT_ID', None) or None
+
+                    # For Firebase ID tokens, pass audience=None to skip strict
+                    # audience validation. Firebase tokens use the Firebase project ID
+                    # as their audience, not the OAuth2 client ID.
+                    verify_audience = google_client_id if google_client_id else None
                     try:
-                        id_info = id_token.verify_oauth2_token(
+                        id_info = id_token.verify_firebase_token(
                             token,
                             requests.Request(),
-                            google_client_id
+                            audience=verify_audience,
                         )
+                        logger.info("GoogleAuthView: Firebase token verified successfully")
                         email = id_info.get('email', email)
                         first_name = id_info.get('given_name', first_name)
                         last_name = id_info.get('family_name', last_name)
-                    except Exception:
+                    except AttributeError:
+                        # Fallback for older google-auth versions without verify_firebase_token
+                        try:
+                            id_info = id_token.verify_oauth2_token(
+                                token,
+                                requests.Request(),
+                                verify_audience,
+                            )
+                            logger.info("GoogleAuthView: OAuth2 token verified successfully")
+                            email = id_info.get('email', email)
+                            first_name = id_info.get('given_name', first_name)
+                            last_name = id_info.get('family_name', last_name)
+                        except Exception as e:
+                            logger.warning(f"GoogleAuthView: Token verification failed: {type(e).__name__}")
+                            if not email:
+                                return error_response('Google token verification failed and email fallback is missing.')
+                    except Exception as e:
+                        logger.warning(f"GoogleAuthView: Token verification failed: {type(e).__name__}")
                         if not email:
                             return error_response('Google token verification failed and email fallback is missing.')
 
                 if not email:
                     return error_response('Email is required for Google authentication')
-                
                 # Check if user exists
                 try:
                     user = User.objects.get(email=email)
@@ -465,7 +486,7 @@ class GoogleAuthView(APIView):
                         login_method='GOOGLE',
                         is_verified=True
                     )
-                    
+                    logger.info(f"GoogleAuthView: Created new user via Google: {user.email}")
                     # Log activity
                     UserActivity.objects.create(
                         user=user,
@@ -476,7 +497,6 @@ class GoogleAuthView(APIView):
                 else:
                     if mode == 'REGISTER':
                         return error_response('An account with this Google email already exists. Please sign in instead.')
-                
                 # Log login activity
                 UserActivity.objects.create(
                     user=user,
@@ -484,13 +504,13 @@ class GoogleAuthView(APIView):
                     description=f'User logged in via Google: {user.email}',
                     metadata={'role': user.role, 'method': 'google', 'mode': mode.lower()}
                 )
-                
+                logger.info(f"GoogleAuthView: Login success for user: {user.email}")
                 return build_auth_success_response(user, request, http_status=status.HTTP_200_OK)
-            
             except Exception as exc:
+                logger.error(f"GoogleAuthView: Exception: {type(exc).__name__}: {exc}")
                 return error_response(f'Google authentication failed: {str(exc)}', status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class LeaderboardView(APIView):

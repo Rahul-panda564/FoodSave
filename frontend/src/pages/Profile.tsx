@@ -235,80 +235,69 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-10">
-      <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 shadow-[0_30px_85px_-44px_rgba(15,23,42,0.82)] md:p-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(45,212,191,0.24),_transparent_36%),radial-gradient(circle_at_82%_16%,_rgba(249,115,22,0.2),_transparent_28%),linear-gradient(135deg,_rgba(15,23,42,0.98),_rgba(15,118,110,0.88))]" />
-        <div className="absolute inset-0 bg-grid-mask opacity-20" />
-        <div className="absolute -top-12 -right-12 h-56 w-56 rounded-full bg-white/10 blur-2xl animate-float-slow pointer-events-none" />
-        <div className="absolute bottom-0 left-1/4 h-40 w-40 rounded-full bg-black/10 blur-2xl animate-float-medium pointer-events-none" />
+    <div className="max-w-4xl mx-auto space-y-6 pb-10">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 p-6 sm:p-8 shadow-2xl">
+        <div className="absolute inset-0 bg-grid-mask opacity-10 pointer-events-none" />
+        <div className="absolute -top-12 -right-12 h-48 w-48 rounded-full bg-teal-400/15 blur-3xl pointer-events-none" />
 
         <div className="relative grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-          <div
-            className="w-24 h-24 rounded-2xl border-4 border-white/40 overflow-hidden bg-white/20 flex items-center justify-center flex-shrink-0 cursor-pointer shadow-xl hover:scale-105 transition-transform duration-300"
-            onClick={handleImageClick}
-            title="Click to change photo"
-          >
-            {profileImagePreview ? (
-              <img src={profileImagePreview} alt="Preview" className="w-full h-full object-cover" />
-            ) : profileImageUrl ? (
-              <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-4xl font-extrabold text-white">{userInitials}</span>
-            )}
-          </div>
-          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-
-          <div className="text-center sm:text-left flex-1">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-              {state.user?.full_name || 'FoodSave User'}
-            </h1>
-            <p className="text-primary-100/80 text-sm mt-1">{state.user?.email}</p>
-            <div className="mt-3 flex flex-wrap justify-center sm:justify-start gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 border border-white/30 text-white">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-300 animate-pulse" />
-                {state.user?.role}
-              </span>
-              {selectedImageFile && (
-                <button
-                  onClick={handleImageUpload}
-                  disabled={isUploadingImage}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white text-primary-700 hover:bg-primary-50 transition disabled:opacity-60"
-                >
-                  {isUploadingImage ? 'Uploading…' : '📤 Upload Photo'}
-                </button>
-              )}
-              {!selectedImageFile && (
-                <button
-                  onClick={handleImageClick}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 border border-white/30 text-white hover:bg-white/30 transition"
-                >
-                  📷 Change Photo
-                </button>
+          <div className="flex flex-col sm:flex-row items-center gap-5">
+            <div
+              className="w-20 h-20 rounded-2xl border-2 border-white/30 overflow-hidden bg-white/15 flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition-transform duration-300"
+              onClick={handleImageClick}
+              title="Click to change photo"
+            >
+              {profileImagePreview ? (
+                <img src={profileImagePreview} alt="Preview" className="w-full h-full object-cover" />
+              ) : profileImageUrl ? (
+                <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-3xl font-bold text-white">{userInitials}</span>
               )}
             </div>
-          </div>
-        </div>
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
 
-          <div className="rounded-[1.8rem] border border-white/12 bg-white/10 p-5 text-white backdrop-blur-sm">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/50">Profile signal</p>
-            <h2 className="mt-2 text-2xl font-bold">Completion score</h2>
-            <div className="mt-5 h-3 rounded-full bg-white/10">
-              <div className="h-full rounded-full bg-gradient-to-r from-primary-300 via-secondary-300 to-emerald-300" style={{ width: `${profileCompleteness}%` }} />
+            <div className="text-center sm:text-left flex-1">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                {state.user?.full_name || 'FoodSave User'}
+              </h1>
+              <p className="text-white/50 text-sm mt-1">{state.user?.email}</p>
+              <div className="mt-3 flex flex-wrap justify-center sm:justify-start gap-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/15 border border-white/20 text-white/80">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  {state.user?.role}
+                </span>
+                {selectedImageFile ? (
+                  <button onClick={handleImageUpload} disabled={isUploadingImage} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white text-gray-800 hover:bg-gray-100 transition disabled:opacity-60">
+                    {isUploadingImage ? 'Uploading…' : '📤 Upload'}
+                  </button>
+                ) : (
+                  <button onClick={handleImageClick} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/15 text-white/70 hover:bg-white/20 transition">
+                    📷 Change Photo
+                  </button>
+                )}
+              </div>
             </div>
-            <p className="mt-3 text-3xl font-black">{profileCompleteness}%</p>
-            <p className="mt-2 text-sm leading-6 text-white/70">A stronger profile improves matching quality, routing precision and visibility across the FoodSave network.</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/8 p-5 text-white backdrop-blur-sm">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-white/40">Profile Completion</p>
+            <div className="mt-3 h-2 rounded-full bg-white/10">
+              <div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-300 transition-all duration-500" style={{ width: `${profileCompleteness}%` }} />
+            </div>
+            <p className="mt-2 text-3xl font-bold">{profileCompleteness}%</p>
+            <p className="mt-1 text-xs leading-5 text-white/50">Complete your profile for better AI matching and routing precision.</p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {profileHighlights.map((item) => (
-          <div key={item.label} className="rounded-[1.6rem] border border-slate-200 bg-white/95 p-5 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.22)]">
-            <div className={`h-1.5 w-full rounded-full bg-gradient-to-r ${item.tone}`} />
-            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{item.label}</p>
-            <p className="mt-3 text-2xl font-black text-slate-900">{item.value}</p>
-            <p className="mt-2 text-sm leading-6 text-slate-500">{item.detail}</p>
+          <div key={item.label} className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className={`h-1 w-full rounded-full bg-gradient-to-r ${item.tone} mb-3`} />
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400">{item.label}</p>
+            <p className="mt-1 text-xl font-bold text-gray-900">{item.value}</p>
+            <p className="mt-1 text-xs leading-5 text-gray-400">{item.detail}</p>
           </div>
         ))}
       </div>
@@ -322,205 +311,107 @@ const Profile: React.FC = () => {
         </div>
       )}
 
-      <div className="bg-white rounded-[1.8rem] border border-slate-200 shadow-[0_22px_55px_-34px_rgba(15,23,42,0.24)] overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-transparent" />
-            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-[0.28em]">Profile Details</h2>
-          </div>
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Profile Details</h2>
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className={`text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-300 hover:-translate-y-0.5 ${
+            className={`text-xs font-semibold px-4 py-2 rounded-xl transition-all ${
               isEditing
-                ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                : 'bg-primary-600 hover:bg-primary-700 text-white shadow'
+                ? 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'
             }`}
           >
             {isEditing ? '✕ Cancel' : '✏️ Edit Profile'}
           </button>
         </div>
 
-        <div className="p-6 md:p-8">
+        <div className="p-5 sm:p-6">
           {isEditing ? (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-[0.22em]">Profile Photo</p>
-                <div className="mt-3 flex flex-wrap items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={handleImageClick}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-primary-200 bg-primary-50 px-3 py-2 text-xs font-semibold text-primary-700 hover:bg-primary-100 transition"
-                  >
-                    📷 Change Photo
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Profile Photo</p>
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <button type="button" onClick={handleImageClick} className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition">
+                    📷 Change
                   </button>
-                  <button
-                    type="button"
-                    onClick={handleImageUpload}
-                    disabled={isUploadingImage || !selectedImageFile}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition disabled:opacity-50"
-                  >
-                    {isUploadingImage ? 'Working…' : '📤 Upload New Photo'}
+                  <button type="button" onClick={handleImageUpload} disabled={isUploadingImage || !selectedImageFile} className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition disabled:opacity-50">
+                    {isUploadingImage ? 'Working…' : '📤 Upload'}
                   </button>
                   {showRemoveConfirm ? (
                     <span className="inline-flex items-center gap-2">
-                      <span className="text-xs font-semibold text-rose-700">Remove photo?</span>
-                      <button
-                        type="button"
-                        onClick={handleRemovePhoto}
-                        disabled={isUploadingImage}
-                        className="inline-flex items-center gap-1 rounded-xl border border-rose-500 bg-rose-600 px-3 py-2 text-xs font-semibold text-white hover:bg-rose-700 transition disabled:opacity-50"
-                      >
-                        {isUploadingImage ? 'Removing…' : 'Yes, Remove'}
+                      <span className="text-xs text-rose-600">Remove?</span>
+                      <button type="button" onClick={handleRemovePhoto} disabled={isUploadingImage} className="rounded-lg border border-rose-400 bg-rose-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-rose-600 transition disabled:opacity-50">
+                        {isUploadingImage ? 'Removing…' : 'Yes'}
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => setShowRemoveConfirm(false)}
-                        className="inline-flex items-center gap-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition"
-                      >
-                        Cancel
+                      <button type="button" onClick={() => setShowRemoveConfirm(false)} className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition">
+                        No
                       </button>
                     </span>
                   ) : (
-                    <button
-                      type="button"
-                      onClick={() => setShowRemoveConfirm(true)}
-                      disabled={isUploadingImage || (!state.user?.profile_image && !profileImagePreview)}
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-100 transition disabled:opacity-50"
-                    >
-                      🗑 Remove Photo
+                    <button type="button" onClick={() => setShowRemoveConfirm(true)} disabled={isUploadingImage || (!state.user?.profile_image && !profileImagePreview)} className="inline-flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-100 transition disabled:opacity-50">
+                      🗑 Remove
                     </button>
                   )}
-                  {selectedImageFile ? (
-                    <span className="text-xs text-slate-500">Selected: {selectedImageFile.name}</span>
-                  ) : null}
+                  {selectedImageFile && <span className="text-xs text-gray-400">{selectedImageFile.name}</span>}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="first_name" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">First Name</label>
-                  <input
-                    type="text"
-                    id="first_name"
-                    name="first_name"
-                    value={formData.first_name}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm"
-                  />
+                  <label htmlFor="first_name" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">First Name</label>
+                  <input type="text" id="first_name" name="first_name" value={formData.first_name} onChange={handleInputChange} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm" />
                 </div>
                 <div>
-                  <label htmlFor="last_name" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Last Name</label>
-                  <input
-                    type="text"
-                    id="last_name"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm"
-                  />
+                  <label htmlFor="last_name" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Last Name</label>
+                  <input type="text" id="last_name" name="last_name" value={formData.last_name} onChange={handleInputChange} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm" />
                 </div>
               </div>
               <div>
-                <label htmlFor="organization_name" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Organization Name</label>
-                <input
-                  type="text"
-                  id="organization_name"
-                  name="organization_name"
-                  value={formData.organization_name}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm"
-                />
+                <label htmlFor="organization_name" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Organization Name</label>
+                <input type="text" id="organization_name" name="organization_name" value={formData.organization_name} onChange={handleInputChange} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm" />
               </div>
               <div>
-                <label htmlFor="phone_number" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Phone Number</label>
-                <input
-                  type="tel"
-                  id="phone_number"
-                  name="phone_number"
-                  value={formData.phone_number}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm"
-                />
+                <label htmlFor="phone_number" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Phone Number</label>
+                <input type="tel" id="phone_number" name="phone_number" value={formData.phone_number} onChange={handleInputChange} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm" />
               </div>
               <div>
-                <label htmlFor="address" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Address</label>
-                <textarea
-                  id="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm resize-none"
-                />
+                <label htmlFor="address" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Address</label>
+                <textarea id="address" name="address" value={formData.address} onChange={handleInputChange} rows={3} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm resize-none" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="odisha_location" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Odisha Location</label>
-                  <select
-                    id="odisha_location"
-                    value={selectedOdishaLocationKey}
-                    onChange={handleOdishaLocationChange}
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm"
-                  >
+                  <label htmlFor="odisha_location" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Odisha Location</label>
+                  <select id="odisha_location" value={selectedOdishaLocationKey} onChange={handleOdishaLocationChange} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm">
                     <option value="">Select district / area</option>
                     {ODISHA_LOCATIONS.map((location) => (
-                      <option key={location.key} value={location.key}>
-                        {location.district} - {location.area}
-                      </option>
+                      <option key={location.key} value={location.key}>{location.district} - {location.area}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="odisha_pin" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Pincode</label>
-                  <input
-                    type="text"
-                    id="odisha_pin"
-                    name="odisha_pincode"
-                    value={formData.odisha_pincode}
-                    onChange={handleInputChange}
-                    placeholder="Enter your pincode"
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm"
-                  />
+                  <label htmlFor="odisha_pin" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Pincode</label>
+                  <input type="text" id="odisha_pin" name="odisha_pincode" value={formData.odisha_pincode} onChange={handleInputChange} placeholder="Enter your pincode" className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm" />
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="latitude" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Latitude</label>
-                  <input
-                    type="number"
-                    id="latitude"
-                    name="latitude"
-                    value={formData.latitude}
-                    onChange={handleInputChange}
-                    step="any"
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm"
-                  />
+                  <label htmlFor="latitude" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Latitude</label>
+                  <input type="number" id="latitude" name="latitude" value={formData.latitude} onChange={handleInputChange} step="any" className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm" />
                 </div>
                 <div>
-                  <label htmlFor="longitude" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Longitude</label>
-                  <input
-                    type="number"
-                    id="longitude"
-                    name="longitude"
-                    value={formData.longitude}
-                    onChange={handleInputChange}
-                    step="any"
-                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition text-sm"
-                  />
+                  <label htmlFor="longitude" className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Longitude</label>
+                  <input type="number" id="longitude" name="longitude" value={formData.longitude} onChange={handleInputChange} step="any" className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition text-sm" />
                 </div>
               </div>
               <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={isSavingProfile}
-                  className="bg-primary-600 hover:bg-primary-700 disabled:opacity-60 text-white font-semibold py-2.5 px-6 rounded-xl shadow transition-all duration-300 hover:-translate-y-0.5 text-sm"
-                >
+                <button type="submit" disabled={isSavingProfile} className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-semibold py-2.5 px-6 rounded-xl shadow-sm transition text-sm">
                   {isSavingProfile ? 'Saving…' : '💾 Save Changes'}
                 </button>
               </div>
             </form>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
                 { label: 'Full Name', value: state.user?.full_name },
                 { label: 'Email Address', value: state.user?.email },
@@ -536,10 +427,10 @@ const Profile: React.FC = () => {
                       : '',
                 },
               ].map((field) => (
-                <div key={field.label} className="group rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
-                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-[0.22em]">{field.label}</span>
-                  <p className="text-sm font-medium text-slate-900 mt-2 rounded-xl bg-white px-3 py-3 border border-slate-100 group-hover:border-primary-200 transition-colors duration-200">
-                    {field.value || <span className="text-gray-400 italic">Not set</span>}
+                <div key={field.label} className="rounded-xl border border-gray-100 bg-gray-50/60 p-3.5 hover:bg-gray-50 transition-colors">
+                  <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">{field.label}</span>
+                  <p className="text-sm font-medium text-gray-800 mt-1.5">
+                    {field.value || <span className="text-gray-300 italic">Not set</span>}
                   </p>
                 </div>
               ))}

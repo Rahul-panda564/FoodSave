@@ -496,144 +496,121 @@ const AITools: React.FC = () => {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55 }}
-        className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-8 md:p-10 shadow-[0_35px_90px_-45px_rgba(15,23,42,0.85)]"
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 p-6 sm:p-8 md:p-10 shadow-2xl"
+        aria-label="AI Command Center"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(45,212,191,0.26),_transparent_38%),radial-gradient(circle_at_82%_18%,_rgba(249,115,22,0.24),_transparent_30%),linear-gradient(135deg,_rgba(15,23,42,0.96),_rgba(15,118,110,0.88))]" />
-        <div className="absolute inset-0 bg-grid-mask opacity-25" />
-        <div className="absolute -top-20 right-[-2rem] h-56 w-56 rounded-full bg-white/10 blur-3xl animate-float-slow" />
-        <div className="absolute bottom-[-5rem] left-10 h-48 w-48 rounded-full bg-teal-300/20 blur-3xl animate-float-medium" />
+        <div className="absolute inset-0 bg-grid-mask opacity-10 pointer-events-none" />
+        <div className="absolute -top-16 right-[-2rem] h-48 w-48 rounded-full bg-teal-400/15 blur-3xl animate-float-slow pointer-events-none" />
+        <div className="absolute bottom-[-3rem] left-10 h-40 w-40 rounded-full bg-emerald-300/10 blur-3xl animate-float-medium pointer-events-none" />
 
-        <div className="relative grid gap-8 lg:grid-cols-[1.3fr_0.85fr] lg:items-end">
-          <div className="space-y-6 text-white">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-white/85 backdrop-blur-sm">
-                <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_16px_rgba(134,239,172,0.9)]" />
-                AI Command Center
-              </span>
-              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">
-                {isAdmin ? 'System-wide visibility enabled' : 'Operational intelligence ready'}
-              </span>
-            </div>
+        <div className="relative space-y-6 text-white">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest backdrop-blur-sm">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              AI Command Center
+            </span>
+            <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/60">
+              {isAdmin ? 'System-wide visibility' : 'Operational intelligence'}
+            </span>
+          </div>
 
-            <div className="max-w-3xl space-y-4">
-              <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">
-                Food rescue intelligence with a sharper visual signal.
-              </h1>
-              <p className="max-w-2xl text-sm leading-7 text-slate-200 md:text-base">
-                This view now behaves like an operations cockpit: live rescue momentum, layered network capacity, AI readiness scores, and rapid access to the algorithm actions that move donations faster.
-              </p>
-            </div>
+          <div className="max-w-3xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+              Food Rescue Intelligence 🤖
+            </h1>
+            <p className="mt-3 max-w-2xl text-sm sm:text-base leading-relaxed text-white/65">
+              Live rescue momentum, network capacity, AI readiness scores, and algorithm actions that move donations faster.
+            </p>
+          </div>
 
-            <div className="grid gap-4 md:grid-cols-3">
-              {missionSignals.map((signal, index) => (
-                <motion.div
-                  key={signal.label}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: 0.1 + index * 0.08 }}
-                  className="rounded-2xl border border-white/12 bg-white/10 p-4 backdrop-blur-md"
+          {/* Mission signals */}
+          <div className="grid gap-3 sm:grid-cols-3">
+            {missionSignals.map((signal, index) => (
+              <motion.div
+                key={signal.label}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 + index * 0.08 }}
+                className="rounded-2xl border border-white/10 bg-white/8 p-4 backdrop-blur-sm"
+              >
+                <div className={`inline-flex rounded-full bg-gradient-to-r px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-white/90 ${signal.color}`}>
+                  {signal.label}
+                </div>
+                <p className="mt-3 text-3xl font-bold text-white">{signal.value}</p>
+                <p className="mt-1.5 text-xs leading-5 text-white/50">{signal.detail}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Time range selector + quick stats */}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center rounded-xl border border-white/10 bg-white/8 p-1">
+              {(['7days', '30days', '90days'] as const).map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${timeRange === range ? 'bg-white text-slate-900 shadow-sm' : 'text-white/70 hover:bg-white/10'}`}
                 >
-                  <div className={`inline-flex rounded-full bg-gradient-to-r px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-white ${signal.color}`}>
-                    {signal.label}
-                  </div>
-                  <p className="mt-4 text-3xl font-black text-white">{signal.value}</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-200/85">{signal.detail}</p>
-                </motion.div>
+                  {range === '7days' ? '7D' : range === '30days' ? '30D' : '90D'}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: 'Donations', value: formatCompact(stats?.total_donations || 0) },
+                { label: 'Meals', value: formatCompact(Math.round(stats?.total_meals_saved || 0)) },
+                { label: 'Waste', value: `${Number(stats?.food_waste_prevented_kg || 0).toFixed(1)}kg` },
+                { label: 'CO₂', value: `${Number(stats?.co2_emissions_saved || 0).toFixed(1)}kg` },
+              ].map(s => (
+                <span key={s.label} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/70">
+                  <span className="font-bold text-white">{s.value}</span> {s.label}
+                </span>
               ))}
             </div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 12 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.12 }}
-            className="relative"
-            style={{ perspective: 1400 }}
-          >
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/12 bg-white/10 p-6 shadow-[0_25px_80px_-40px_rgba(15,23,42,0.95)] backdrop-blur-xl">
-              <div className="absolute inset-x-6 top-6 h-24 rounded-full bg-gradient-to-r from-teal-300/30 via-cyan-300/10 to-amber-300/20 blur-3xl" />
-              <div className="relative space-y-6 text-white [transform:rotateX(10deg)_rotateY(-7deg)]">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.24em] text-white/55">Signal Stack</p>
-                    <h2 className="mt-2 text-2xl font-bold">Realtime rescue spectrum</h2>
-                  </div>
-                  <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/10 p-1">
-                    {(['7days', '30days', '90days'] as const).map((range) => (
-                      <button
-                        key={range}
-                        onClick={() => setTimeRange(range)}
-                        className={`rounded-xl px-3 py-2 text-xs font-semibold transition-all ${timeRange === range ? 'bg-white text-slate-900 shadow-sm' : 'text-white/80 hover:bg-white/10'}`}
-                      >
-                        {range === '7days' ? '7D' : range === '30days' ? '30D' : '90D'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {[
-                    { label: 'Total Donations', value: formatCompact(stats?.total_donations || 0), accent: 'from-primary-300/35 to-primary-500/5' },
-                    { label: 'Meals Saved', value: formatCompact(Math.round(stats?.total_meals_saved || 0)), accent: 'from-amber-300/35 to-orange-500/5' },
-                    { label: 'Waste Prevented', value: `${Number(stats?.food_waste_prevented_kg || 0).toFixed(1)} kg`, accent: 'from-emerald-300/35 to-teal-500/5' },
-                    { label: 'CO2 Saved', value: `${Number(stats?.co2_emissions_saved || 0).toFixed(1)} kg`, accent: 'from-violet-300/35 to-fuchsia-500/5' },
-                  ].map((card) => (
-                    <div key={card.label} className={`rounded-2xl border border-white/12 bg-gradient-to-br ${card.accent} p-4`}>
-                      <p className="text-xs uppercase tracking-[0.24em] text-white/60">{card.label}</p>
-                      <p className="mt-3 text-2xl font-black text-white">{card.value}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </motion.section>
 
-      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.05 }} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {[
-          { label: 'Active Rescue Flow', value: stats?.active_donations || 0, suffix: 'live donations', tone: 'from-primary-500 to-teal-400' },
-          { label: 'NGO Mesh', value: stats?.total_ngos || 0, suffix: 'available NGOs', tone: 'from-secondary-500 to-orange-400' },
-          { label: 'Volunteer Layer', value: stats?.total_volunteers || 0, suffix: 'field responders', tone: 'from-emerald-500 to-primary-400' },
-          { label: isAdmin ? 'User Signals' : 'Rescue Confidence', value: isAdmin ? stats?.active_users || 0 : metrics.logisticsReadiness, suffix: isAdmin ? 'active participants' : 'dispatch score', tone: 'from-violet-500 to-fuchsia-400' },
+          { label: 'Active Rescue Flow', value: stats?.active_donations || 0, suffix: 'live donations', tone: 'from-emerald-500 to-teal-400' },
+          { label: 'NGO Mesh', value: stats?.total_ngos || 0, suffix: 'available NGOs', tone: 'from-amber-500 to-orange-400' },
+          { label: 'Volunteer Layer', value: stats?.total_volunteers || 0, suffix: 'field responders', tone: 'from-sky-500 to-blue-400' },
+          { label: isAdmin ? 'User Signals' : 'Rescue Confidence', value: isAdmin ? stats?.active_users || 0 : metrics.logisticsReadiness, suffix: isAdmin ? 'active participants' : 'dispatch score', tone: 'from-violet-500 to-purple-400' },
         ].map((item, index) => (
           <motion.div
             key={item.label}
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.08 + index * 0.05 }}
-            className="group relative overflow-hidden rounded-[1.6rem] border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_-28px_rgba(15,23,42,0.3)] backdrop-blur-sm"
+            className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 sm:p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
           >
             <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${item.tone}`} />
-            <div className="absolute right-[-1.2rem] top-[-1.2rem] h-24 w-24 rounded-full bg-slate-900/5 blur-2xl transition-transform duration-500 group-hover:scale-125" />
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{item.label}</p>
-            <p className="mt-4 text-3xl font-black text-slate-900">{item.value}</p>
-            <p className="mt-2 text-sm text-slate-500">{item.suffix}</p>
+            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400">{item.label}</p>
+            <p className="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">{item.value}</p>
+            <p className="mt-1 text-[11px] text-gray-400">{item.suffix}</p>
           </motion.div>
         ))}
       </motion.section>
 
-      <section className="grid grid-cols-1 gap-5 xl:grid-cols-[1.6fr_0.9fr]">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.1 }} className="relative overflow-hidden rounded-[1.8rem] border border-slate-200/70 bg-white/95 p-6 shadow-[0_24px_70px_-36px_rgba(15,23,42,0.28)]">
-          <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-r from-primary-500/10 via-secondary-400/10 to-transparent" />
-          <div className="relative flex flex-wrap items-center justify-between gap-3">
+
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-[1.6fr_0.9fr]">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.1 }} className="rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Temporal View</p>
-              <h3 className="mt-1 text-2xl font-bold text-slate-900">Donation velocity vs meal recovery</h3>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">📈 Temporal View</p>
+              <h3 className="mt-1 text-lg font-bold text-gray-900">Donation velocity vs meal recovery</h3>
             </div>
-            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-500">
-              Animated intelligence chart
-            </span>
           </div>
-          <div className="mt-6 h-[320px]">
+          <div className="mt-5 h-[300px]">
             <AnimatePresence mode="wait">
               {labels.length > 0 ? (
                 <motion.div
                   key={`line-${timeRange}-${labels.length}`}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.28 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
                   className="h-full"
                 >
                   <Line data={lineChartData} options={lineOptions} />
@@ -644,7 +621,7 @@ const AITools: React.FC = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex h-full items-center justify-center rounded-2xl border border-dashed border-slate-200 text-sm text-slate-400"
+                  className="flex h-full items-center justify-center rounded-xl border border-dashed border-gray-200 text-sm text-gray-400"
                 >
                   No trend data available for this time range.
                 </motion.div>
@@ -653,113 +630,81 @@ const AITools: React.FC = () => {
           </div>
         </motion.div>
 
-        <div className="grid gap-5">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.14 }} className="relative overflow-hidden rounded-[1.8rem] border border-slate-200/70 bg-white/95 p-6 shadow-[0_22px_60px_-36px_rgba(15,23,42,0.28)]">
-            <div className="absolute right-4 top-4 h-16 w-16 rounded-full bg-primary-500/10 blur-2xl" />
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Network Composition</p>
-            <h3 className="mt-1 text-xl font-bold text-slate-900">Layered rescue mesh</h3>
-            <div className="mt-5 h-[250px]">
-              <motion.div
-                key={`doughnut-${timeRange}-${stats?.active_donations || 0}`}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="h-full"
-              >
-                <Doughnut data={networkChartData} options={doughnutOptions} />
-              </motion.div>
+        <div className="grid gap-4">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.14 }} className="rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">🔗 Network Composition</p>
+            <h3 className="mt-1 text-lg font-bold text-gray-900">Layered rescue mesh</h3>
+            <div className="mt-4 h-[230px]">
+              <Doughnut data={networkChartData} options={doughnutOptions} />
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.18 }} className="relative overflow-hidden rounded-[1.8rem] border border-slate-200/70 bg-white/95 p-6 shadow-[0_22px_60px_-36px_rgba(15,23,42,0.28)]">
-            <div className="absolute left-5 top-5 h-14 w-14 rounded-full bg-secondary-500/10 blur-2xl" />
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">AI Scorecard</p>
-            <h3 className="mt-1 text-xl font-bold text-slate-900">Operational readiness radar</h3>
-            <div className="mt-5 h-[250px]">
-              <motion.div
-                key={`radar-${timeRange}-${metrics.logisticsReadiness}`}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="h-full"
-              >
-                <Radar data={radarChartData} options={radarOptions} />
-              </motion.div>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.18 }} className="rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">🎯 AI Scorecard</p>
+            <h3 className="mt-1 text-lg font-bold text-gray-900">Operational readiness radar</h3>
+            <div className="mt-4 h-[230px]">
+              <Radar data={radarChartData} options={radarOptions} />
             </div>
           </motion.div>
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-5 xl:grid-cols-[1.2fr_0.8fr]">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.22 }} className="rounded-[1.8rem] border border-slate-200/70 bg-white/95 p-6 shadow-[0_24px_70px_-36px_rgba(15,23,42,0.28)]">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Priority Signals</p>
-              <h3 className="mt-1 text-2xl font-bold text-slate-900">Where the next intervention matters most</h3>
-            </div>
-          </div>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.22 }} className="rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">⚡ Priority Signals</p>
+          <h3 className="mt-1 text-lg font-bold text-gray-900">Where the next intervention matters most</h3>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
             {missionSignals.map((signal) => (
-              <div key={signal.label} className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
-                <div className={`h-2 w-full rounded-full bg-gradient-to-r ${signal.color}`} />
-                <p className="mt-4 text-sm font-semibold text-slate-900">{signal.label}</p>
-                <p className="mt-2 text-2xl font-black text-slate-900">{signal.value}</p>
-                <p className="mt-2 text-sm leading-6 text-slate-500">{signal.detail}</p>
+              <div key={signal.label} className="rounded-xl border border-gray-100 bg-gray-50/80 p-4 hover:bg-gray-50 transition-colors">
+                <div className={`h-1 w-full rounded-full bg-gradient-to-r ${signal.color} mb-3`} />
+                <p className="text-sm font-semibold text-gray-800">{signal.label}</p>
+                <p className="mt-1 text-2xl font-bold text-gray-900">{signal.value}</p>
+                <p className="mt-1.5 text-xs leading-5 text-gray-400">{signal.detail}</p>
               </div>
             ))}
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.26 }} className="rounded-[1.8rem] border border-slate-200/70 bg-slate-950 p-6 text-white shadow-[0_24px_70px_-36px_rgba(15,23,42,0.75)]">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/45">AI Snapshot</p>
-          <h3 className="mt-1 text-2xl font-bold">Command deck highlights</h3>
-          <div className="mt-6 space-y-4">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.26 }} className="rounded-2xl border border-gray-100 bg-gradient-to-br from-slate-900 to-slate-800 p-5 sm:p-6 text-white shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/40">🧠 AI Snapshot</p>
+          <h3 className="mt-1 text-lg font-bold">Command deck highlights</h3>
+          <div className="mt-5 space-y-3">
             {[
               { label: 'Live active donation stream', value: formatCompact(stats?.active_donations || 0), note: 'Open rescue opportunities currently in system.' },
-              { label: 'Meals pushed toward recovery', value: formatCompact(Math.round(stats?.total_meals_saved || 0)), note: 'Captured output from recent operations and predictive routing.' },
-              { label: 'Response layer strength', value: `${metrics.logisticsReadiness}%`, note: 'Volunteer and NGO readiness under the current donation load.' },
+              { label: 'Meals pushed toward recovery', value: formatCompact(Math.round(stats?.total_meals_saved || 0)), note: 'Output from recent operations and predictive routing.' },
+              { label: 'Response layer strength', value: `${metrics.logisticsReadiness}%`, note: 'Volunteer and NGO readiness under current load.' },
             ].map((item) => (
-              <div key={item.label} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div key={item.label} className="rounded-xl border border-white/10 bg-white/5 p-3.5">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-white/75">{item.label}</p>
-                  <span className="text-xl font-black">{item.value}</span>
+                  <p className="text-sm text-white/70">{item.label}</p>
+                  <span className="text-lg font-bold">{item.value}</span>
                 </div>
-                <p className="mt-2 text-sm leading-6 text-white/55">{item.note}</p>
+                <p className="mt-1.5 text-xs leading-5 text-white/40">{item.note}</p>
               </div>
             ))}
           </div>
         </motion.div>
       </section>
 
-      <section className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.24 }}
-          className="rounded-[1.8rem] border border-slate-200/70 bg-white/95 p-6 shadow-[0_24px_70px_-36px_rgba(15,23,42,0.28)]"
-        >
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Performance Matrix</p>
-          <h3 className="mt-1 text-2xl font-bold text-slate-900">AI score vs target</h3>
-          <div className="mt-6 h-[300px]">
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.24 }} className="rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">📊 Performance Matrix</p>
+          <h3 className="mt-1 text-lg font-bold text-gray-900">AI score vs target</h3>
+          <div className="mt-5 h-[280px]">
             <Bar data={barChartData} options={barOptions} />
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.28 }}
-          className="rounded-[1.8rem] border border-slate-200/70 bg-white/95 p-6 shadow-[0_24px_70px_-36px_rgba(15,23,42,0.28)]"
-        >
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Insight Scatter</p>
-          <h3 className="mt-1 text-2xl font-bold text-slate-900">Donations vs meal recovery</h3>
-          <div className="mt-6 h-[300px]">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.28 }} className="rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">🔬 Insight Scatter</p>
+          <h3 className="mt-1 text-lg font-bold text-gray-900">Donations vs meal recovery</h3>
+          <div className="mt-5 h-[280px]">
             <Scatter data={scatterChartData} options={scatterOptions} />
           </div>
         </motion.div>
       </section>
 
-      <section className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {leadershipCards.map((card, cardIndex) => {
           const items = card.data.length ? card.data : [card.empty as TopEntity];
           const maxValue = Math.max(...items.map((item) => Number(item[card.valueKey] || 0)), 1);
@@ -770,31 +715,31 @@ const AITools: React.FC = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.28 + cardIndex * 0.05 }}
-              className={`rounded-[1.8rem] border ${card.border} bg-gradient-to-br ${card.accent} p-6 shadow-[0_22px_60px_-36px_rgba(15,23,42,0.22)]`}
+              className="rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Leadership Board</p>
-                  <h3 className="mt-1 text-2xl font-bold text-slate-900">{card.title}</h3>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">🏆 Leadership Board</p>
+                  <h3 className="mt-1 text-lg font-bold text-gray-900">{card.title}</h3>
                 </div>
                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${card.badge}`}>Ranked by {card.label}</span>
               </div>
-              <div className="mt-6 space-y-4">
+              <div className="mt-5 space-y-3">
                 {items.map((entity, index) => {
                   const value = Number(entity[card.valueKey] || 0);
                   const fill = Math.max(10, (value / maxValue) * 100);
 
                   return (
-                    <div key={entity.user_id || index} className="rounded-2xl border border-white/60 bg-white/80 p-4 backdrop-blur-sm">
+                    <div key={entity.user_id || index} className="rounded-xl border border-gray-100 bg-gray-50/60 p-3.5 hover:bg-gray-50 transition-colors">
                       <div className="flex items-center justify-between gap-3">
                         <div>
-                          <p className="text-sm font-semibold text-slate-900">{card.resolveName(entity)}</p>
-                          <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Rank {index + 1}</p>
+                          <p className="text-sm font-semibold text-gray-800">{card.resolveName(entity)}</p>
+                          <p className="mt-0.5 text-[11px] text-gray-400">Rank {index + 1}</p>
                         </div>
-                        <span className="text-lg font-black text-slate-900">{value}</span>
+                        <span className="text-lg font-bold text-gray-900">{value}</span>
                       </div>
-                      <div className="mt-4 h-2.5 rounded-full bg-slate-100">
-                        <div className={`h-full rounded-full bg-gradient-to-r ${cardIndex === 0 ? 'from-primary-500 to-teal-400' : 'from-secondary-500 to-amber-400'}`} style={{ width: `${fill}%` }} />
+                      <div className="mt-3 h-2 rounded-full bg-gray-200">
+                        <div className={`h-full rounded-full bg-gradient-to-r ${cardIndex === 0 ? 'from-emerald-500 to-teal-400' : 'from-amber-500 to-orange-400'}`} style={{ width: `${fill}%` }} />
                       </div>
                     </div>
                   );
@@ -804,6 +749,7 @@ const AITools: React.FC = () => {
           );
         })}
       </section>
+
 
       <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.32 }} className="space-y-5">
         <div className="flex items-center gap-4">

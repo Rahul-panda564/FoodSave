@@ -202,23 +202,45 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           const lastName = displayNameParts.slice(1).join(' ');
 
           let response;
+          const googlePayload = {
+            token: idToken,
+            email: firebaseUser.email || '',
+            first_name: firstName,
+            last_name: lastName,
+            role: 'DONOR',
+            mode: 'LOGIN',
+            phone_number: firebaseUser.phoneNumber || '',
+            organization_name: '',
+          };
+          // Ensure at least token or email is present
+          if (!googlePayload.token && !googlePayload.email) {
+            console.error('Google login failed: missing token and email', googlePayload);
+            dispatch({ type: 'LOAD_USER_FAILURE', payload: 'Google sign-in failed: missing token and email' });
+            return;
+          }
           try {
-            response = await authAPI.firebaseLoginGoogle({
-              token: idToken,
-              email: firebaseUser.email || undefined,
-              first_name: firstName,
-              last_name: lastName,
-              role: 'DONOR',
-              mode: 'LOGIN',
-            });
+
+            response = await authAPI.firebaseLoginGoogle(googlePayload);
           } catch (primaryError: unknown) {
-            response = await authAPI.firebaseLoginGoogle({
-              email: firebaseUser.email || undefined,
+            // Try fallback with only email if token is missing
+            const fallbackPayload = {
+              email: firebaseUser.email || '',
               first_name: firstName,
               last_name: lastName,
               role: 'DONOR',
               mode: 'LOGIN',
-            });
+              phone_number: firebaseUser.phoneNumber || '',
+              organization_name: '',
+            };
+
+            try {
+              response = await authAPI.firebaseLoginGoogle(fallbackPayload);
+            } catch (secondaryError: unknown) {
+              // Log error details for debugging
+              console.error('Google login error response:', secondaryError);
+              dispatch({ type: 'LOAD_USER_FAILURE', payload: 'Google sign-in failed (backend rejected request)' });
+              return;
+            }
           }
 
           const { user, access, refresh } = response.data;
@@ -349,9 +371,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       dispatch({ type: 'LOGIN_SUCCESS', payload: user });
       return response.data as AuthSuccessPayload;
     } catch (error: unknown) {
-      const firebaseCode = getErrorCode(error) ? ` (${getErrorCode(error)})` : '';
-      const errorMessage = extractErrorMessage(error, `Google sign-in failed${firebaseCode}`);
-      dispatch({ type: 'LOGIN_FAILURE', payload: errorMessage });
+      const firebaseCode = getErrorCode(error) || '';
+      const firebaseMessage = (error as { message?: string })?.message || '';
+      const backendMsg = extractErrorMessage(error, '');
+      const displayMsg = backendMsg
+        || (firebaseCode ? `Google sign-in failed (${firebaseCode})` : '')
+        || (firebaseMessage ? `Google sign-in failed: ${firebaseMessage}` : '')
+        || 'Google sign-in failed';
+      console.error('Google sign-in error:', { code: firebaseCode, message: firebaseMessage, error });
+      dispatch({ type: 'LOGIN_FAILURE', payload: displayMsg });
       throw error;
     }
   };

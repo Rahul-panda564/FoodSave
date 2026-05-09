@@ -1,8 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MapContainer, Marker, Popup, TileLayer, Circle, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import { analyticsAPI, donationsAPI } from '../services/api';
 import {
   buildOdishaAddress,
@@ -11,19 +8,7 @@ import {
   ODISHA_LOCATIONS,
 } from '../data/odishaLocations';
 
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-
-const LeafletDefaultIcon = L.Icon.Default as typeof L.Icon.Default & {
-  mergeOptions: (options: L.IconOptions) => void;
-};
-
-LeafletDefaultIcon.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-});
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_FIREBASE_API_KEY || '';
 
 type ApiError = {
   message?: string;
@@ -155,72 +140,19 @@ const getPriorityTone = (band?: PriorityDonationResult['priority_band']) => {
   }
 };
 
-const MapAutoResize: React.FC = () => {
-  const map = useMap();
-
-  useEffect(() => {
-    const invalidate = () => {
-      map.invalidateSize({ pan: false, debounceMoveend: true });
-    };
-
-    const timer = window.setTimeout(invalidate, 180);
-    window.addEventListener('resize', invalidate);
-
-    let observer: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== 'undefined') {
-      observer = new ResizeObserver(() => invalidate());
-      const container = map.getContainer();
-      observer.observe(container);
-      if (container.parentElement) {
-        observer.observe(container.parentElement);
-      }
-    }
-
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener('resize', invalidate);
-      observer?.disconnect();
-    };
-  }, [map]);
-
-  return null;
-};
-
-const MapViewportController: React.FC<{ center: [number, number]; hasLocation: boolean }> = ({ center, hasLocation }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    const targetZoom = hasLocation ? Math.max(map.getZoom(), 12) : 7;
-    map.setView(center, targetZoom, { animate: false });
-    const timer = window.setTimeout(() => map.invalidateSize(), 80);
-    return () => window.clearTimeout(timer);
-  }, [center, hasLocation, map]);
-
-  return null;
-};
-
-const MapZoomButtons: React.FC = () => {
-  const map = useMap();
+const GoogleMapEmbed: React.FC<{ center: [number, number]; hasLocation: boolean; zoom?: number }> = ({ center, hasLocation, zoom = 12 }) => {
+  const mapZoom = hasLocation ? zoom : 7;
+  const src = `https://www.google.com/maps/embed/v1/view?key=${GOOGLE_MAPS_API_KEY}&center=${center[0]},${center[1]}&zoom=${mapZoom}&maptype=roadmap`;
 
   return (
-    <div className="absolute right-3 top-3 z-[1000] flex flex-col gap-2">
-      <button
-        type="button"
-        onClick={() => map.zoomIn()}
-        className="h-9 w-9 rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50"
-        title="Zoom in"
-      >
-        +
-      </button>
-      <button
-        type="button"
-        onClick={() => map.zoomOut()}
-        className="h-9 w-9 rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50"
-        title="Zoom out"
-      >
-        −
-      </button>
-    </div>
+    <iframe
+      title="Route Map View"
+      src={src}
+      style={{ width: '100%', height: '100%', border: 0, borderRadius: '1rem' }}
+      allowFullScreen
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    />
   );
 };
 
@@ -1010,43 +942,19 @@ const AIAlgorithmPanel: React.FC<{ title?: string }> = ({ title = 'AI Algorithm 
             </span>
           </div>
           <p className="mt-2 text-sm text-slate-500">Blue rings show nearest NGOs by distance. Amber rings show recommendation distances.</p>
-          <div className="mt-5 h-[340px] overflow-hidden rounded-2xl border border-slate-200">
-            <MapContainer
-              center={mapCenter}
-              zoom={hasLocation ? 12 : 7}
-              scrollWheelZoom={true}
-              zoomControl={false}
-              minZoom={4}
-              maxZoom={18}
-              preferCanvas
-              style={{ height: '100%', width: '100%' }}
-            >
-              <MapAutoResize />
-              <MapViewportController center={mapCenter} hasLocation={hasLocation} />
-              <MapZoomButtons />
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {hasLocation ? (
-                <>
-                  <Marker position={mapCenter}>
-                    <Popup>Pickup location</Popup>
-                  </Marker>
-                  {mapRings.map((ring) => (
-                    <Circle
-                      key={ring.key}
-                      center={mapCenter}
-                      radius={Math.max(100, ring.distanceKm * 1000)}
-                      pathOptions={{ color: ring.color, weight: 2, fillOpacity: 0.06 }}
-                    >
-                      <Popup>{ring.label} • ~{ring.distanceKm} km</Popup>
-                    </Circle>
-                  ))}
-                </>
-              ) : null}
-            </MapContainer>
+          <div className="mt-5 h-[340px] overflow-hidden rounded-2xl border border-gray-200">
+            <GoogleMapEmbed center={mapCenter} hasLocation={hasLocation} />
           </div>
+          {mapRings.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {mapRings.map((ring) => (
+                <span key={ring.key} className="inline-flex items-center gap-1.5 rounded-lg border border-gray-100 bg-gray-50 px-2.5 py-1 text-xs text-gray-600">
+                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: ring.color }} />
+                  {ring.label} • {ring.distanceKm}km
+                </span>
+              ))}
+            </div>
+          )}
           {!hasLocation ? <p className="mt-3 text-xs font-semibold text-amber-700">Set a valid latitude and longitude to visualize matches.</p> : null}
         </div>
       </div>
