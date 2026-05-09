@@ -1,5 +1,7 @@
 # 🥗 FoodSave — AI-Powered Food Redistribution Platform
 
+**🚀 Live Demo: [https://food-save-eight.vercel.app/](https://food-save-eight.vercel.app/)**
+
 <p align="center">
 	<a href="https://github.com/Rahul-panda564/FoodSave"><img alt="Repository" src="https://img.shields.io/badge/Repository-FoodSave-0f766e"></a>
 	<img alt="Frontend" src="https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-2563eb">
@@ -250,3 +252,4 @@ FoodSave/
 ## 📜 License
 
 MIT License — see [LICENSE](LICENSE) for details.
+
