@@ -79,9 +79,8 @@ const Dashboard: React.FC = () => {
 
   useRevealOnScroll(isLoading);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const greeting = useMemo(() => {
-    const h = new Date().getHours();
+    const h = time.getHours();
     if (h >= 5 && h < 12) return 'Good morning';
     if (h >= 12 && h < 17) return 'Good afternoon';
     if (h >= 17 && h < 21) return 'Good evening';
