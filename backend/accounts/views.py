@@ -432,7 +432,7 @@ class GoogleAuthView(APIView):
                     # For Firebase ID tokens, pass audience=None to skip strict
                     # audience validation. Firebase tokens use the Firebase project ID
                     # as their audience, not the OAuth2 client ID.
-                    verify_audience = google_client_id if google_client_id else None
+                    verify_audience = None
                     try:
                         id_info = id_token.verify_firebase_token(
                             token,
